@@ -38,14 +38,14 @@ We may install Ubuntu Server on VirtualBox, VMWare, and so on. Here we are insta
     ![Step-13](/01-installation/install/install-13.png)
 14. Confirm your storage partition
     ![Step-14](/01-installation/install/install-14.png)
-15. Done & Go next
+15. Done & Continue
     ![Step-15](/01-installation/install/install-15.png)
 16. Give the credential her
-    ![Step-16](/01-installation/install/install-6.png)
+    ![Step-16](/01-installation/install/install-16.png)
 17. Skip & Continue
     ![Step-17](/01-installation/install/install-17.png)
 18. Choose OpenSSH & Go next if have not any own identity
-    ![Step-19](/01-installation/install/install-18.png)
+    ![Step-18](/01-installation/install/install-18.png)
 19. Choose Done & Go next
     ![Step-19](/01-installation/install/install-19.png)
 
