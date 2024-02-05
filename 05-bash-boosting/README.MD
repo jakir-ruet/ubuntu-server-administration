@@ -1,1 +1,2 @@
-### Coming Soon...
+#### Boost your Bash-Script 
+https://github.com/jakir-ruet/bashscript-learning
