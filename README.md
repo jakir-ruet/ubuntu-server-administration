@@ -36,7 +36,7 @@ We may install Ubuntu Server on VirtualBox, VMWare, and so on. Here we are insta
     ![Step-12](/01-installation/install/install-12.png)
 13. Root Drive (/) 15GM (Min), choose `/` & Done [Swap Memory Double of RAM Size (In my case, I skip it here.)]
     ![Step-13](/01-installation/install/install-13.png)
-14. f
+14. Confirm your storage partition
     ![Step-14](/01-installation/install/install-14.png)
 15. Done & Go next
     ![Step-15](/01-installation/install/install-15.png)
