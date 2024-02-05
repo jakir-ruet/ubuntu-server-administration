@@ -40,3 +40,36 @@ If you faced ‘Host key verification failed’
 ssh-keygen -R 172.16.102.134
 exit
 ```
+#### Virtual Network Computing (VNC)
+It is a graphical desktop-sharing system that uses the Remote Frame Buffer protocol (RFB) to remotely control another computer. It transmits the keyboard and mouse input from one computer to another, relaying the graphical-screen updates, over a network.
+```bash
+lsb_release -a # os version check
+cat /etc/os-release
+```
+```bash
+sudo apt update 
+sudo apt install lightdm 
+sudo reboot 
+sudo apt install x11vnc 
+
+sudo nano /lib/systemd/system/x11vnc.service
+
+!Copy and paste these commands - change the password
+[Unit] 
+Description=x11vnc service 
+After=display—manager.service network.target syslog.target 
+
+[Service] 
+Type=simple 
+ExecStart=/usr/bin/x11vnc —forever —display :0 —auth guess -passwd 
+ExecStop=/usr/bin/killall x11vnc 
+Restart=on—failure 
+
+[Install] 
+WantedBy=multi—user.target 
+
+systemctl daemon—reload 
+systemctl enable x11vnc.service 
+systemctl start x11vnc.service
+systemctl status x11vnc.service
+```

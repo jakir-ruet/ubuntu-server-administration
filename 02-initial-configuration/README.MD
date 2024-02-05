@@ -7,6 +7,7 @@ sudo apt update
 #### Setup static IP Address
 ```bash
 ip a
+ip addr
 ifconfig
 ifconfig -a
 ```
