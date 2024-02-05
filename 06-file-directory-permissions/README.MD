@@ -80,8 +80,8 @@ Symbolic Mode
 |  SL   | Operator | Description                                                      |
 | :---: | :------: | :--------------------------------------------------------------- |
 |   1   |   `+`    | `Adds permission to a file or directory`                         |
-|   1   |   `-`    | `Removes the permission`                                         |
-|   1   |   `=`    | `Sets the permission and overrides the permissions set earlier.` |
+|   2   |   `-`    | `Removes the permission`                                         |
+|   3   |   `=`    | `Sets the permission and overrides the permissions set earlier.` |
 
 Change Permission Recursively
 It is common to use the basic chmod command to change the permission of a single file. However, you may need to modify the permissions recursively for all files within a directory. 
