@@ -62,9 +62,27 @@ The terminology is as follows:
 
 While the ps command only displays the processes that are currently running, you can also use it to list all the processes.
 ```bash
-ps -A
+ps      # running process
+ps -A   # running process in details
+top     # running process realtime
+htop     # running process realtime
+ps -u   # running process
+
+ps -ef  # process in details (location)
+ps aux  # process in details (location)
+ps aux | less # process in details (location) less
+ps aux | grep terminal # process display which related to terminal
+pstree # see the tree of process
+ps -C su # see the ps by category
+pgrep bash # Find the PID
 ```
-***Stop process:*** Checking the kill service name and its ID.
+
+Checking the kill service name and its ID.
 ```bash
-kill -l or $kill -L
+kill -l # kill list
+kill -L # kill list
+```
+Kill the process
+```bash
+kill -9 PID
 ```
