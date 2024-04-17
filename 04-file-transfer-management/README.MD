@@ -25,3 +25,14 @@ grep -v lorem head.txt # search text except named lorem in head.txt file
 grep -n lorem head.txt # search text named lorem with line no in head.txt file
 grep -i lorem head.txt # search text named lorem with not case sensitive in head.txt file
 ```
+
+Find
+```bash
+find -name info.txt  # in present location
+find -type f  # search by file type
+find -type d # search by directory
+find -size -4k # search by size of file
+find -name *.txt # in present location find by file extension
+find -perm 644 # search by given permission of files
+find /home -user jakir # search by owner
+```
