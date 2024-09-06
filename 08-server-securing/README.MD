@@ -81,3 +81,65 @@ iptables is a command-line utility for configuring the Linux kernel firewall rul
    - `Drop`: Drop the packet silently.
    - `Reject`: Drop the packet and send an error response.
    - `LOGog Log the packet details.
+
+##### Basic Commands
+```bash
+iptables -L # List all rules
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT # Add a rule
+iptables -D INPUT 1 # Delete a rule
+sudo iptables-save > /etc/iptables/rules.v4 # Save rules to make them persistent across reboots
+```
+
+**Explanation:**
+- -A INPUT > Append the rule to the INPUT chain.
+- -p tcp > Specify the protocol (TCP in this case).
+- --dport 80 > Match packets destined for port 80.
+- -j ACCEPT > The target action (ACCEPT the packet).
+- -m > match extension
+
+If you want to block all incoming traffic except SSH (port 22), you could use:
+```bash
+iptables -P INPUT DROP # Set the default policy of INPUT chain to DROP
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT # Allow incoming SSH traffic
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT # Allow established/related traffic
+```
+##### Common Use Cases
+- Firewall configuration: To allow or block specific traffic.
+- Network Address Translation (NAT): For forwarding traffic from one IP to another.
+- Port forwarding: Redirect traffic from one port to another.
+
+##### Advanced iptables uses
+1. **Port Forwarding with NAT:** Port forwarding can be used to redirect traffic from one port on your server to another port or machine.
+```bash
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 192.168.1.2:8080
+iptables -t nat -A POSTROUTING -j MASQUERADE
+```
+This example forwards incoming HTTP traffic (port 80) to a different server (`192.168.1.2`) on port `8080`.
+
+2. **Logging Dropped Packets:** You might want to log packets that are being dropped by your firewall rules.
+```bash
+iptables -A INPUT -p tcp --dport 23 -j LOG --log-prefix "Dropped Telnet Packet: "
+iptables -A INPUT -p tcp --dport 23 -j DROP
+```
+This rule logs any attempt to connect via Telnet (port 23) and then drops the packet.
+
+3. **Restricting SSH Access to a Specific IP:** To allow SSH access only from a particular IP address.
+```bash
+iptables -A INPUT -p tcp --dport 22 -s 203.0.113.10 -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -j DROP
+```
+Only the IP address `203.0.113.10` can connect via SSH; all other SSH traffic is dropped.
+
+4. **Rate Limiting Connections:** To limit incoming connections to prevent brute-force attacks.
+```bash
+iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --set
+iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 60 --hitcount 4 -j DROP
+```
+This example allows a maximum of 3 new SSH connections per minute.
+
+5. **Making Rules Persistent:** On most Linux distributions, iptables rules are not persistent across reboots. To make them persistent:
+- Save the current iptables configuration:
+```bash
+sudo iptables-save > /etc/iptables/rules.v4
+```
+- Restore rules on reboot: Use a service like `iptables-persistent` (Debian/Ubuntu) or configure them in the appropriate system file (`/etc/sysconfig/iptables` on CentOS/RedHat).
