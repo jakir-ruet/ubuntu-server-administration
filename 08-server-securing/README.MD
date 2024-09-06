@@ -54,3 +54,30 @@ Consider implementing kernel hardening techniques such as restricting kernel mod
 
 NB:
 After configuring these we should take creative initiative to properly configure the local network devices such as routers (MikroTik Router, CCNA Router), physical firewall, and so on.
+
+#### IP Table
+iptables is a command-line utility for configuring the Linux kernel firewall rules and network traffic, included in most Linux distributions. It allows users to set up, maintain, and inspect the tables of IP packet filter rules.
+
+##### Architecture & Components
+![Architecture](/img/iptables%20architecture.png)
+1. **Tables**: A table is a collection of chains. The most common tables are:
+   - `Filter`: Default table used for filtering packets. It has **three** built-in chains: `Input`, `Output`, and `Forward`.
+   - `Network Address Translation (NAT)`: Altering packets to route traffic to the correct destination. It has chains like `Prerouting`, `Output`, and `Postrouting`.
+   - `Mangle`: Used for `specialized` packet alteration such as `QoS`.
+   - `Raw`: Used to configure exemptions from connection tracking.
+2. **Chains**: A chain is a set of rules that match packets against specific criteria. Each table has its `five` chains:
+   - `Prerouting`: Handles packets before any routing decisions are made by the system. 
+   - `Input`: Handles packets destined for the local machine.
+   - `Forward`: Handles packets being routed through the machine, but not destined for it.
+   - `Output`: Handles packets originating from the local machine.
+   - `Postrouting`: Handles packets after routing decisions have been made but before they leave the network interface.
+3. **Rules**: Rules are added to chains to specify criteria for matching packets. Each rule consists of a set of conditions and a target action such as 
+   - `Accept`, 
+   - `Drop`, 
+   - `Reject`, or 
+   - `Log`
+4. Targets: The target is what should happen to the packet if it matches the rule. Common targets include:
+   - `Accept`: Allow the packet.
+   - `Drop`: Drop the packet silently.
+   - `Reject`: Drop the packet and send an error response.
+   - `LOGog Log the packet details.
