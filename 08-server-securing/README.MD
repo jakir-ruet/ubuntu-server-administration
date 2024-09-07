@@ -58,6 +58,17 @@ After configuring these we should take creative initiative to properly configure
 #### IP Table
 iptables is a command-line utility for configuring the Linux kernel firewall rules and network traffic, included in most Linux distributions. It allows users to set up, maintain, and inspect the tables of IP packet filter rules.
 
+##### Prerequisite
+- On Ubuntu
+```bash
+sudo apt update
+sudo apt install iptables
+```
+- On Rocky/CentOS/RedHat
+```text
+Installed by Default
+```
+
 ##### Architecture & Components
 ![Architecture](/img/iptables%20architecture.png)
 1. **Tables**: A table is a collection of chains. The most common tables are:
@@ -93,9 +104,12 @@ sudo iptables-save > /etc/iptables/rules.v4 # Save rules to make them persistent
 **Explanation:**
 - -A INPUT > Append the rule to the INPUT chain.
 - -p tcp > Specify the protocol (TCP in this case).
+- -s Source > Define the source.
+- -d Destination > Define the destination.
 - --dport 80 > Match packets destined for port 80.
 - -j ACCEPT > The target action (ACCEPT the packet).
 - -m > match extension
+- -i > Insert the rule
 
 If you want to block all incoming traffic except SSH (port 22), you could use:
 ```bash
