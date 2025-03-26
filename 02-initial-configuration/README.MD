@@ -55,6 +55,27 @@ netplan apply
 netplan –debug  apply
 ifconfig
 ```
+
+#### Static IP Configuration in RedHat
+```bash
+nmcli connection show
+cd /etc/NetworkManager/system-connections/
+nano ens160.nmconnection
+```
+Put this configuration
+```ini
+[ipv4]
+method=manual
+addresses=192.168.1.100/24
+gateway=192.168.1.1
+dns=8.8.8.8;
+```
+```bash
+systemctl restart NetworkManager
+ip a show ens160
+nmcli connection show
+```
+
 #### In details of Nano Editor
 Operation & Navigation
 |  SL   | Hit Key                  | Explanation                         |
