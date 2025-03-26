@@ -62,12 +62,16 @@ nmcli connection show
 cd /etc/NetworkManager/system-connections/
 nano ens160.nmconnection
 ```
+Check default gateway
+```bash
+netstat -nr | grep default
+```
 Put this configuration
 ```ini
 [ipv4]
 method=manual
 addresses=192.168.1.100/24
-gateway=192.168.1.1
+gateway=192.168.1.254
 dns=8.8.8.8;
 ```
 ```bash
