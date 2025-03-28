@@ -172,3 +172,43 @@ Deleting Shortcuts
 |   3   | ALT + BSP  | Delete word to the left        |
 |   4   | CTRL + DEL | Delete word to the right       |
 |   5   | ALT + DEL  | Delete current line            |
+
+#### Java & OpenJDK Install
+##### Path Variable Setup like [Open JDK Install](https://jdk.java.net/21/)
+Recommended way
+```bash
+apt update
+java -version
+cd /opt
+# as per your OS you should download specified version. my case aarch64.
+wget https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d69e91c558476027ac/13/GPL/openjdk-21.0.2_linux-aarch64_bin.tar.gz
+tar zxvf openjdk-21.0.2_linux-aarch64_bin.tar.gz
+mv jdk-21.0.2 jdk-21
+whereis java # searching if required
+nano .bashrc # or .bash_profile or .zshrc (mac)
+JAVA_HOME=/opt/jdk-21 # set java path variable
+PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
+export PATH
+source .bashrc # or .bash_profile or .zshrc (mac)
+java --version
+echo $PATH
+echo $JAVA_HOME
+```
+
+Another way
+```bash
+apt install openjdk-21-jre-headless
+find /usr/lib/jvm/java-21-openjdk-arm64/java* | head -n 3 # searching if required
+nano .bashrc # or .bash_profile or .zshrc (mac)
+JAVA_HOME=/usr/lib/jvm/java-21-openjdk-arm64 # set java path variable
+PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
+export PATH
+source .bashrc # or .bash_profile or .zshrc (mac)
+java --version
+echo $PATH
+echo $JAVA_HOME
+```
+
+
+
+
