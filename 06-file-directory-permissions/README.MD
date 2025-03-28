@@ -187,3 +187,41 @@ Its gives different `inode`
 | **Deleting Original File**    | Hard link remains intact  | Soft link breaks       |
 | **Works Across Filesystems?** | ❌ No                      | ✅ Yes                  |
 | **Can Link Directories?**     | ❌ No                      | ✅ Yes (with `-s` flag) |
+
+##### Input & Output Redirection in Linux
+Linux input/output (I/O) redirection allows you to control how commands receive input and where they send output. It’s essential for scripting, automation, and system administration.
+
+**Linux has three standard data streams:**
+| Stream     | Description     | File Descriptor | Default Device    |
+| ---------- | --------------- | --------------- | ----------------- |
+| **STDIN**  | Standard Input  | `0`             | Keyboard          |
+| **STDOUT** | Standard Output | `1`             | Terminal (screen) |
+| **STDERR** | Standard Error  | `2`             | Terminal (screen) |
+
+Input & Output Redirection commands
+```bash
+ls > mylist.txt # makes list
+cat mylist.txt
+ls >> mylist.txt # makes another list
+echo "insert new line" >> mylist.txt # insert new line
+wc -l < myfile.txt # line counts
+``` 
+Using pipe for combining two or more commands
+```bash
+ls -l | grep ".txt"
+cat myfile.txt | wc -w
+```
+
+**Summary Table**
+| Redirection Type                    | Symbol         | Example                      |
+| ----------------------------------- | -------------- | ---------------------------- |
+| **Overwrite Output**                | `>`            | `ls > file.txt`              |
+| **Append Output**                   | `>>`           | `echo "text" >> file.txt`    |
+| **Overwrite Error**                 | `2>`           | `ls /fake_dir 2> error.log`  |
+| **Append Error**                    | `2>>`          | `ls /fake_dir 2>> error.log` |
+| **Overwrite Both (Output & Error)** | `&>`           | `command &> output.log`      |
+| **Append Both (Output & Error)**    | `>> file 2>&1` | `command >> output.log 2>&1` |
+| **Input Redirection**               | `<`            | `wc -l < file.txt`           |
+| **Pipe Output**                     | `Pipe`         | `grep ".txt"`                |
+| **Discard Output**                  | `/dev/null`    | `command > /dev/null 2>&1`   |
+
