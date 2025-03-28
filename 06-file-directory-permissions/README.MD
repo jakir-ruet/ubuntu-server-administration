@@ -225,3 +225,9 @@ cat myfile.txt | wc -w
 | **Pipe Output**                     | `Pipe`         | `grep ".txt"`                |
 | **Discard Output**                  | `/dev/null`    | `command > /dev/null 2>&1`   |
 
+**Help command**
+| Method   | Works With              | Output Type        | Example     |
+| -------- | ----------------------- | ------------------ | ----------- |
+| `help`   | Built-in shell commands | Short descriptions | `help cd`   |
+| `man`    | External commands       | Detailed manual    | `man ls`    |
+| `--help` | External commands       | Quick summary      | `ls --help` |
