@@ -88,3 +88,102 @@ It is common to use the basic chmod command to change the permission of a single
 ```bash
 sudo chmod -R 755 Example
 ```
+
+##### Ownership `chown` & Group `chgrp` Change
+```bash
+chgrp jakir info.txt # change group
+chown jakir inro.txt # change ownership
+```
+
+##### inode
+An inode `index node` is a data structure used by Linux filesystems (like ext4, xfs) to store metadata about a file. Each file or directory has an associated inode, which contains important information except the filename and actual data. Its works as `pointer` of a file.
+
+**What Information Does an Inode Store?**
+- File type (regular file, directory, symbolic link, etc.)
+- Permissions (read, write, execute)
+- Owner (UID) and Group (GID)
+- File size
+- Timestamps (creation, modification, access)
+- Number of hard links
+- Location of data blocks on disk (but not the file name!)
+
+**Soft (Symbolic) Link**
+A soft link (symlink) is like a `shortcut`. It stores the path to the original file instead of pointing to its inode. Key Features of Soft Links:
+- Different inode number than the original file
+- Can link directories and files
+- Can cross different filesystems
+- If the original file is deleted, the soft link breaks (becomes invalid)
+```bash
+mkdir a
+cd a
+mkdir b
+cd b
+cd b
+mkdir c
+cd c
+echo "Hello, Soft Link. How are you" > info-soft-link.txt
+```
+Go back to `home` directory & Make a soft link
+```bash
+ln -s a/b/c/info-soft-link.txt my-test-soft-link
+ls -ltr # check status
+cat my-test-soft-link
+```
+
+Insert new line via shortcut, main file will be updated
+```bash
+nano my-test-soft-link # write Its update from shortcut of soft link.
+echo "write Its update from shortcut of soft link." my-test-soft-link # write Its update from shortcut of soft link.
+cat my-test-soft-link 
+cat a/b/c/info-soft-link.txt
+```
+Lets check `inode`
+```bash
+ls -li
+17345966 lrwxrwxrwx. 1 root root 14 Mar 28 20:13 my-test-soft-link -> a/b/c/info-soft-link.txt
+ls -li a/b/c/info-soft-link.txt
+17345957 -rw-r--r--. 1 root root 56 Mar 28 20:22 a/b/c/info-soft-link.txt
+```
+Its gives different `inode`
+
+**Hard Link**
+A hard link is another name for the same file (same inode). It points directly to the inode of the original file. Key Features of Hard Links:
+- Same inode number as the original file
+- No duplication of file content
+- Deleting the original file doesn’t delete the hard link
+- Cannot link directories
+- Must be on the same filesystem
+```bash
+touch a/b/c/info-hard-link.txt
+echo "Hello, hard link test" > a/b/c/info-hard-link.txt
+```
+Create hard link
+```bash
+ln a/b/c/info-hard-link.txt my-test-hard-link
+```
+
+Insert new line via shortcut, main file will be updated
+```bash
+nano my-test-hard-link # write Its update from rename file of soft link.
+echo "write Its update from rename file of soft link." my-test-hard-link # write Its update from rename file of soft link.
+cat my-test-hard-link 
+cat a/b/c/info-hard-link.txt
+```
+
+Let check `inode`
+```bash
+ls -li a/b/c/info-hard-link.txt
+17345967 -rw-r--r--. 2 root root 22 Mar 28 20:39 a/b/c/info-hard-link.txt
+ls -li a/b/c/my-test-hard-link
+17345967 -rw-r--r--. 2 root root 22 Mar 28 20:39 my-test-hard-link
+```
+Its gives different `inode`
+
+| Feature                       | Hard Link                 | Soft Link (Symlink)    |
+| ----------------------------- | ------------------------- | ---------------------- |
+| **Inode Number**              | Same as original          | Different              |
+| **Storage Type**              | Points to the same inode  | Stores the file path   |
+| **File Content**              | Same as the original file | Just a pointer (path)  |
+| **Deleting Original File**    | Hard link remains intact  | Soft link breaks       |
+| **Works Across Filesystems?** | ❌ No                      | ✅ Yes                  |
+| **Can Link Directories?**     | ❌ No                      | ✅ Yes (with `-s` flag) |
