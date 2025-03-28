@@ -98,7 +98,7 @@ chown jakir inro.txt # change ownership
 ##### inode
 An inode `index node` is a data structure used by Linux filesystems (like ext4, xfs) to store metadata about a file. Each file or directory has an associated inode, which contains important information except the filename and actual data. Its works as `pointer` of a file.
 
-**What Information Does an Inode Store?**
+###### What Information Does an Inode Store?
 - File type (regular file, directory, symbolic link, etc.)
 - Permissions (read, write, execute)
 - Owner (UID) and Group (GID)
@@ -107,7 +107,7 @@ An inode `index node` is a data structure used by Linux filesystems (like ext4, 
 - Number of hard links
 - Location of data blocks on disk (but not the file name!)
 
-**Soft (Symbolic) Link**
+###### Soft (Symbolic) Link
 A soft link (symlink) is like a `shortcut`. It stores the path to the original file instead of pointing to its inode. Key Features of Soft Links:
 - Different inode number than the original file
 - Can link directories and files
