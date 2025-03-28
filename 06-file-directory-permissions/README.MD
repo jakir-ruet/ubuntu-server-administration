@@ -162,7 +162,7 @@ Create hard link
 ln a/b/c/info-hard-link.txt my-test-hard-link
 ```
 
-Insert new line via shortcut, main file will be updated
+Insert new line via rename file, main file will be updated
 ```bash
 nano my-test-hard-link # write Its update from rename file of soft link.
 echo "write Its update from rename file of soft link." my-test-hard-link # write Its update from rename file of soft link.
