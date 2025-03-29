@@ -8,7 +8,13 @@ id jasim # check user
 Set password - `passwd`
 ```bash
 passwd jasim # add a user
-id jasim # check user
+id jasim # check user's id
+usermod -u 5000 jasim # 5000 is new id
+```
+To check how many groups in system & how many groups a user is a part 
+```bash
+cat /etc/group
+groups jasim
 ```
 
 Delete user - `userdel/deluser(Debian)`
@@ -26,8 +32,8 @@ ls -l /home/jasim
 ```
 Check for Stale Entries in `/etc/group` and `/etc/shadow`
 ```bash
-grep jasim /etc/group
-grep jasim /etc/shadow
+grep jasim /etc/group # check group
+grep jasim /etc/shadow # check password
 ```
 If you find stale entries, you can remove them manually using `Be careful when editing these system files`
 ```bash
@@ -82,27 +88,74 @@ Finally, create the user named `jasim`. It will work properly
 sudo adduser jasim
 ```
 
+User is involved how many groups
 ```bash
-addgroup/groupadd: # To add a group
-delgroup/groupdel: # To delete a group
-sudo grep finance /etc/group
-sudo usermod -g devops jasim # change group of jasim (g for primary group)
-sudo usermod -G ops jasim # change group of jasim (G for secondary group)
-sudo groupadd -g 650 finance # add a new group with specific GID
-sudo userdel -r jasim # delete a home directory of a user (/home)
-```
-```bash
-passwd: # To change the user’s password
-```
-```bash
-su - jakir # login
-```
-```bash
-cat /etc/passwd # understanding password
+groups jasim
 ```
 
-Add a user to sudoers group
+Create a New Group
 ```bash
-sudo usermod -aG sudo jasim # -a is add a user to the group without removing the current group.
-ALL=(ALL:ALL) ALL # first one is the users allowed,  second one is the hosts, third one is the user as you are running the command & last one is the commands allowed
+groupadd developer
+groupadd designer
+```
+
+Replace a user to new group `-g`
+```bash
+usermod -g mango jasim # replace old/mother group
+```
+Append/add/assign a user to new group `-aG`
+```bash
+usermod -aG mango jasim # add extra group, old remain unchanged
+usermod -aG mango,developer,designer jasim # add multiple - use `no spaces`
+```
+
+Remove group from a user
+```bash
+gpasswd -d jasim developer
+```
+
+The sudoers group is a system group. Its `sudoers` group in Linux is a special user group that is typically used to grant `sudo` privileges to users, allowing them to execute commands as the `root`/`superuser` or other users with administrative privileges.
+
+Add a user to the sudoers group in `Debian`
+```bash
+usermod -aG sudo jasim # here, `sudo` group
+```
+
+Add a user to the sudoers group in `RPM`
+```bash
+sudo usermod -aG wheel jasim # here, `wheel` group
+```
+
+`sudoers` Configuration - Privilege
+```bash
+root  ALL=(ALL)   ALL
+jasim ALL=(ALL)   ALL # allow privilege as root
+```
+Granting `wheel` Privileges to Groups:
+```bash
+%wheel   ALL=(ALL)   ALL   # Allow members of the 'sudo' group to run any command
+```
+If jasim is not in the wheel group, you can add him to the group using the following command:
+```bash
+sudo usermod -aG wheel jasim
+```
+
+Verifying Group Membership
+```bash
+groups jasim
+```
+Verify Privileges Using `sudo -l`
+```bash
+sudo -l -U jasim
+```
+If everything is set up correctly, you should see
+```bash
+User jasim may run the following commands on this host:
+    (ALL) ALL
+```
+Test with a Command
+```bash
+su - jasim
+su
+ls /root # you should see root directory
 ```
