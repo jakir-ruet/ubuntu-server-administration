@@ -159,3 +159,12 @@ su - jasim
 su
 ls /root # you should see root directory
 ```
+
+Understanding Password Aging Parameters
+```bash
+sudo chage -l jasim
+```
+Check global defaults
+```bash
+cat /etc/login.defs
+```
