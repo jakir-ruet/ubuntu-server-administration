@@ -81,33 +81,34 @@ nmcli connection show
 ```
 
 #### In details of Vi/Vim Editor
-It is a powerful text editor used in Linux for efficient file editing, programming, and system administration. It’s an advanced version of `vi` with more features.  
+It is a powerful text editor used in Linux for efficient file editing, programming, and system administration. It’s an advanced version of `vi` with more features.
 
-Opening & Exiting Vim
-| Action                  | Command        |
-| ----------------------- | -------------- |
-| Open a file in Vim      | `vim filename` |
-| Open Vim without a file | `vim`          |
-| Exit without saving     | `:q!`          |
-| Save and exit           | `:wq` or `ZZ`  |
-| Save without exiting    | `:w`           |
-
-Vim Modes > Vim has three main modes:  
+Vim has three main modes:  
 | Mode             | Description                             | How to Enter             |
 | ---------------- | --------------------------------------- | ------------------------ |
 | **Normal Mode**  | Default mode for navigation & commands  | Press `Esc`              |
 | **Insert Mode**  | Allows text editing                     | Press `i`, `a`, `o`      |
 | **Command Mode** | Used for saving, quitting, and searches | Press `:` in Normal Mode |
 
+Opening, Saving & Exiting Vim
+| Action                  | Command        |
+| ----------------------- | -------------- |
+| Open a file in Vim      | `vim filename` |
+| Open Vim without a file | `vim`          |
+| Exit without saving     | `:q!`          |
+| Save and exit           | `:wq` / `ZZ`   |
+| Save without exiting    | `:w`           |
+| Save and force quit     | `:wq!`         |
+
 Navigation in Normal Mode
-| Action                          | Command                        |
-| ------------------------------- | ------------------------------ |
-| Move cursor left/right/up/down  | `h` / `l` / `k` / `j`          |
-| Move to the beginning of a line | `0`                            |
-| Move to the end of a line       | `$`                            |
-| Jump to a specific line         | `:<line_number>` (e.g., `:10`) |
-| Move one word forward/backward  | `w` / `b`                      |
-| Search for text                 | `/keyword` or `?keyword`       |
+| Action                            | Command                        |
+| --------------------------------- | ------------------------------ |
+| Move cursor top/right/bottom/left | `↑` / `→` / `↓` / `←`          |
+| Move to the beginning of a line   | `0`                            |
+| Move to the end of a line         | `$`                            |
+| Jump to a specific line           | `:<line_number>` (e.g., `:10`) |
+| Move one word forward/backward    | `w` / `b`                      |
+| Search for text                   | `/keyword` or `?keyword`       |
 
  Editing Text
 | Action                              | Command    |
@@ -121,14 +122,6 @@ Navigation in Normal Mode
 | Paste copied content                | `p`        |
 | Undo last change                    | `u`        |
 | Redo last undo                      | `Ctrl + r` |
-
-Saving and Exiting
-| Action              | Command       |
-| ------------------- | ------------- |
-| Save file           | `:w`          |
-| Save and quit       | `:wq` or `ZZ` |
-| Quit without saving | `:q!`         |
-| Save and force quit | `:wq!`        |
 
 Advanced Features
 | Action                     | Command           |
