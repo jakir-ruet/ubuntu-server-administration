@@ -37,7 +37,9 @@ It's a powerful Linux storage management system that provides `flexible disk par
 1. **Physical Devices** – these are used to store data. It be disk partitions as `whole disks`, `RAID arrays` or `SAN disks`. These are generally the `/dev/sda`, `/dev/sdb` etc.
 2. **Physical Volume(PV)** – Physical devices can not be used for LVM directly. They have to be converted into `Physical Volumes(PVs)`.
 3. **Volume Group(VG)** – are the storage pool made from one or more PV. VG is used to create Logical Volumes(LVs). It is not necessary to use the entire VG to create LVs
-4. **Logical Volume(LV)** – are created from the free physical extents in a volume group. LVs are collection of logical extents which are mapped to physical extents. Visualizing LVM Structure.
+4. **Logical Volume(LV)** – are created from the free physical extents in a volume group. LVs are collection of logical extents which are mapped to physical extents. 
+
+Visualizing LVM Structure.
 ![LVM Illustration](/07-storage-management/lvm.png)
 
 
