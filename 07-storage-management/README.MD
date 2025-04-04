@@ -40,8 +40,8 @@ It's a powerful Linux storage management system that provides `flexible disk par
 4. **Logical Volume(LV)** – are created from the free physical extents in a volume group. LVs are collection of logical extents which are mapped to physical extents. 
 
 Visualizing LVM Structure.
-![LVM Illustration](/07-storage-management/lvm.png)
 
+![LVM Illustration](/07-storage-management/lvm.png)
 
 **Storage Pool**
 A storage pool is a logical collection of physical storage resources (disks, SSDs, partitions) that are grouped together to provide:
@@ -49,14 +49,9 @@ A storage pool is a logical collection of physical storage resources (disks, SSD
 - Flexible allocation
 - Advanced features like thin provisioning and snapshots
 
-**Local Storage (HDD, SSD):** Local storage in Linux, including Red Hat Enterprise Linux (RHEL), refers to physical disks and their partitions, logical volumes (if using LVM), and file systems that reside within the system. Below are the detailed steps and concepts for managing local storage, including checking storage type, partitioning, formatting, and building file systems.
-
 Checking all available block devices
 ```bash
 lsblk
-```
-Checking all available block devices in details
-```bash
 lsblk -l
 ```
 
