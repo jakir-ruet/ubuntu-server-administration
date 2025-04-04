@@ -21,6 +21,31 @@ Managing storage in Red Hat Enterprise Linux (RHEL) involves configuring, monito
 | **Partitioning Flexibility** | Limited flexibility, hard to change partitions after creation      | More flexible with partition sizes and modifications                   |
 | **Usage**                    | Older systems and smaller disks (typically <2TB)                   | Modern systems, large disks (typically >2TB)                           |
 
+#### Logical Volume Management (LVM)
+It's a powerful Linux storage management system that provides `flexible disk partitioning`, `dynamic resizing`, `snapshots`, and `better storage utilization` compared to traditional partitioning.
+
+**Benefits of using LVM**
+- Flexible Storage – Resize logical volumes (LVs) on demand.
+- Friendly File System - Any file system can be installed on the LVs
+- Storage Change - Easy to replace faulty disks
+- Snapshots – Backup a volume without downtime.
+- Combine Multiple Disks – Create a single storage pool (VG) from multiple disks.
+- Thin Provisioning – Allocate more storage than physically available.
+- Easy Management – Add/remove disks without reformatting.
+
+**Steps of Storage Management**
+1. **Physical Devices** – these are used to store data. It be disk partitions as `whole disks`, `RAID arrays` or `SAN disks`. These are generally the `/dev/sda`, `/dev/sdb` etc.
+2. **Physical Volume(PV)** – Physical devices can not be used for LVM directly. They have to be converted into `Physical Volumes(PVs)`.
+3. **Volume Group(VG)** – are the storage pool made from one or more PV. VG is used to create Logical Volumes(LVs). It is not necessary to use the entire VG to create LVs
+4. **Logical Volume(LV)** – are created from the free physical extents in a volume group. LVs are collection of logical extents which are mapped to physical extents. Visualizing LVM Structure.
+![LVM Illustration](/07-storage-management/lvm.png)
+
+
+**Storage Pool**
+A storage pool is a logical collection of physical storage resources (disks, SSDs, partitions) that are grouped together to provide:
+- Unified storage capacity
+- Flexible allocation
+- Advanced features like thin provisioning and snapshots
 
 **Local Storage (HDD, SSD):** Local storage in Linux, including Red Hat Enterprise Linux (RHEL), refers to physical disks and their partitions, logical volumes (if using LVM), and file systems that reside within the system. Below are the detailed steps and concepts for managing local storage, including checking storage type, partitioning, formatting, and building file systems.
 
