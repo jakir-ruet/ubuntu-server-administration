@@ -1,3 +1,18 @@
+### System Tuning?
+System tuning refers to optimizing the performance of a computer system by adjusting certain parameters, configurations, and settings. In the context of **Red Hat Enterprise Linux (RHEL)**, system tuning aims to improve the efficiency, speed, and resource management of your server or workstation. This can involve fine-tuning several components, including:
+
+- **CPU:** Adjusting how the CPU performs tasks or manages multiple processes (like setting CPU governor for performance or power savings).
+- **Memory (RAM):** Configuring how the system uses memory, including optimizing cache usage, limiting swap usage, or enabling huge pages for large-memory applications.
+- **Disk I/O:** Modifying disk scheduling algorithms or file system parameters to improve read/write operations.
+- **Network:** Tuning TCP/IP settings for faster data transfer and reducing network latency.
+- **Kernel Parameters:** Fine-tuning the Linux kernel parameters (via sysctl) for better system performance under load.
+
+**Tuning Important?**
+- **Performance Optimization:** Tuning ensures that your system runs as efficiently as possible, making sure resources (CPU, memory, disk, network) are used optimally.
+- **Stability:** Proper tuning can help avoid system crashes or slowdowns by preventing resource exhaustion.
+- **Scalability:** Tuning helps systems scale to meet the needs of high-load applications, such as web servers, databases, and enterprise applications.
+- **Security:** Some tuning, such as disabling unused services or restricting resource access, can improve the overall security posture of your system.
+
 #### Process Management
 Running an instance of a program is called a process. In Linux Process ID (PID) is used to represent the process details. The process will be implemented in Linux in two ways;
 1. Background Process
