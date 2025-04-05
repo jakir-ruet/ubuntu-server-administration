@@ -104,7 +104,7 @@ vgs --units g # display the sizes in gigabytes
 
 **Let's walk through a `hands-on` example.**
 
-I have three hard drives: `/dev/sda` (70GB), `/dev/sdb` (80GB), and `/dev/sdc` (70GB). First, I need to create a logical volume for each hard drive. Then, I want to create a volume group of `220GB`. Finally, I would like to create `two logical volumes` within the volume group: one of `120GB` and another of `100GB`, and format them with a filesystem. How can I do this?
+How can I create logical volumes for three hard drives (`/dev/sda` with `70GB`, `/dev/sdb` with `80GB`, and `/dev/sdc` with `70GB`), combine them into a 220GB volume group, and create two logical volumes (`120GB` and `100GB`) within the volume group, then format them with a filesystem?
 
 **Steps**
 - Create Physical Volumes (PVs)
