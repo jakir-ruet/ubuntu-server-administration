@@ -110,6 +110,10 @@ chgrp jakir info.txt # change group
 chown jakir inro.txt # change ownership
 ```
 
+##### Access Control Lists
+Access Control Lists (ACLs) are used to provide more granular and flexible control over file and directory permissions, extending beyond the standard user, group, and other permissions, allowing you to grant or deny specific permissions to individual users or groups. 
+
+
 ##### inode
 An inode `index node` is a data structure used by Linux filesystems (like ext4, xfs) to store metadata about a file. Each file or directory has an associated inode, which contains important information except the filename and actual data. Its works as `pointer` of a file.
 
