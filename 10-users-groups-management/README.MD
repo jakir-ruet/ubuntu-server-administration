@@ -45,12 +45,16 @@ Remove the Home Directory `If Safe` - If you are sure the user `jasim` is no lon
 ```bash
 sudo rm -rf /home/jasim
 ```
-`For Group:` Good to know `jasim:x:1002:` its get using `sudo vi /etc/group`
+`For Group:` 
+
+Good to know `jasim:x:1002:` its get using `sudo vi /etc/group`
 ```bash
 group_name(jasim):password(x):group_ID(1002):user_list(empty)
 ```
 
-`For Shadow:` Good to know `jasim:!!:19547:0:99999:7:::` its get using `sudo vi /etc/shadow`
+`For Shadow:` 
+
+Good to know `jasim:!!:19547:0:99999:7:::` its get using `sudo vi /etc/shadow`
 ```bash
 username(jasim):password(!!):last_change(19547):min_days(0):max_days(99999):warn(7):inactive(empty):expire(empty)
 ```

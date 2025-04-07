@@ -1,3 +1,18 @@
+#### Paths
+Paths are used to locate files and directories within the system. The concept of absolute and relative paths is the same as what I explained earlier, but let's dive deeper into how paths are structured in Linux
+
+##### Absolute Path
+Provides a complete, fixed location starting from the root directory, useful when you want to ensure you're always referring to the same location, regardless of the current directory. An absolute path in Red Hat Linux (and all Linux systems) begins from the root directory `/`, which is the top-level directory of the file system.
+
+```bash
+/home/jakir/Documents/info.txt
+```
+##### Relative Path
+Provides a location based on where you currently are, useful for navigating within a known structure or when working on a project. A relative path in Linux refers to a file or directory's location relative to the current working directory. Example: If you are in the directory `/home/jakir/` and want to access file.txt in `/home/jakir/Documents/`, the relative path would be:
+```bash
+Documents/info.txt
+```
+
 #### File Management:
 File management is so important on a computer that users always want a simple and easy way to use it. Performing simple tasks such as searching, copying, moving, creating and deleting files, and complex operations such as remote access of files and SSH connections is vital.
 
