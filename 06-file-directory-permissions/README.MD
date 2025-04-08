@@ -30,7 +30,7 @@ sudo rm -R dirName # if there is something in the directory
 sudo rm -r dirname1 dirname2 dirname3
 sudo rm -r filename1 filename2 filename3
 ```
-copying the file & folder:
+Copying the file & folder:
 ```bash
 sudo cp fileName.format destinationFolder
 ```
@@ -110,14 +110,82 @@ chgrp jakir info.txt # change group
 chown jakir inro.txt # change ownership
 ```
 
-##### Access Control Lists
-Access Control Lists (ACLs) are used to provide more granular and flexible control over file and directory permissions, extending beyond the standard user, group, and other permissions, allowing you to grant or deny specific permissions to individual users or groups. 
+#### Access Control Lists
+Access Control Lists (ACLs) are used to provide more granular and flexible control over file and directory permissions, extending beyond the standard user, group, and other permissions, allowing you to grant or deny specific permissions to individual users or groups.
 
+Check if ACL support is enabled for your XFS filesystem
+```bash
+xfs_info /dev/mapper/rhel-root # If ACL is supported, you should see `attr = 1`
+```
 
-##### inode
+Check the mount options for ACL support or not. If `acl` is listed in the output, it means ACL is enabled. If not, you may need to add it to `/etc/fstab` and remount.
+```bash
+mount | grep acl
+```
+
+Check & Install 
+```bash
+which getfacl
+which setfacl
+sudo dnf install acl
+sudo yum install acl
+```
+
+Add `acl` to `/etc/fstab`
+```bash
+# <file system>                             <mount point>   <type>  <options>       <dump>  <pass>
+/dev/mapper/rhel-root                       /               xfs     defaults,acl    0       0
+UUID=f295a1aa-e334-43f8-a103-b1a7e1d66a9d   /boot           xfs     defaults,acl    0       0
+```
+- The `acl` option tells the system to enable ACL support on that particular filesystem.
+
+After modifying `/etc/fstab`, you need to remount the each filesystem to apply the changes.
+```bash
+sudo mount -o remount /
+sudo mount -o remount /boot
+```
+
+To confirm that ACL support is enabled, run
+```bash
+mount | grep acl # if okay will see `/dev/mapper/rhel-root on / type xfs (rw,relatime,acl)`
+```
+
+Setting/Removing ACL for a User
+```bash
+setfacl -m u:username:rwx testfile
+setfacl -x u:username testfile
+```
+
+Setting/Removing ACL for a Group
+```bash
+setfacl -m g:mygroup:rx testfile
+setfacl -x g:mygroup testfile
+```
+
+Setting/Removing `default ACLs` on a `directory` so that any new files created inside that directory inherit the ACLs.
+```bash
+setfacl -m d:u:username:rwx mydir
+```
+
+To remove all ACLs from a file and revert it to the standard user/group/others permissions
+```bash
+setfacl -b testfile
+```
+
+To view the current ACLs on a file or directory, use the `getfacl` command
+```bash
+getfacl testfile
+```
+
+If you have ACLs for `multiple users` and `groups`, the mask limits the permissions for all `users` and `groups` except the owner.
+```bash
+setfacl -m d:u:username:rwx mydir
+```
+
+#### inode
 An inode `index node` is a data structure used by Linux filesystems (like ext4, xfs) to store metadata about a file. Each file or directory has an associated inode, which contains important information except the filename and actual data. Its works as `pointer` of a file.
 
-###### What Information Does an Inode Store?
+##### What Information Does an Inode Store?
 - File type (regular file, directory, symbolic link, etc.)
 - Permissions (read, write, execute)
 - Owner (UID) and Group (GID)
@@ -126,7 +194,7 @@ An inode `index node` is a data structure used by Linux filesystems (like ext4, 
 - Number of hard links
 - Location of data blocks on disk (but not the file name!)
 
-###### Soft (Symbolic) Link
+##### Soft (Symbolic) Link
 A soft link (symlink) is like a `shortcut`. It stores the path to the original file instead of pointing to its inode. Key Features of Soft Links:
 - Different inode number than the original file
 - Can link directories and files
