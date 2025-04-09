@@ -1,4 +1,10 @@
 ### User & Group Access Management
+
+Check user list 
+```bash
+cat /etc/passwd
+```
+
 Add user - `adduser/useradd(Debian)`
 ```bash
 adduser jasim # add a user
@@ -109,6 +115,8 @@ usermod -g mango jasim # replace old/mother group
 ```
 Append/add/assign a user to new group `-aG`
 ```bash
+useradd -m -G grp-developer Rahim # create extra group, old remain unchanged or
+useradd -mG grp-designer Karim # create extra group, old remain unchanged
 usermod -aG mango jasim # add extra group, old remain unchanged
 usermod -aG mango,developer,designer jasim # add multiple - use `no spaces`
 ```
