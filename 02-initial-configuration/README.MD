@@ -52,6 +52,7 @@ control + x # save & exit
 ```bash
 netplan try
 netplan apply
+sudo systemctl restart systemd-networkd
 netplan –debug  apply
 ifconfig
 ```
