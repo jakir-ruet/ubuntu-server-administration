@@ -180,3 +180,68 @@ Check global defaults
 ```bash
 cat /etc/login.defs
 ```
+
+### Let's Handson
+#### Real Life Scenario
+ I have three departments — `Marketing`, `Sales`, and `Accounts` — and four users: `Jakir (Marketing)`, `Jahid (Sales)`, and `Sadek (Accounts)`. I want to create departmental directories and restrict access such that each user can access only their respective department’s directory. However, Sadek should also have read and write access to the Sales directory in addition to Accounts. How can I implement this setup on a Red Hat system?
+##### Step 1 (User Add) - Under root user
+```bash
+adduser jakir
+passwd jakir
+adduser jahid
+passwd jahid
+adduser sadek
+passwd sadek
+```
+
+##### Step 2 (User Group) - Under root user
+```bash
+groupadd marketing
+groupadd sales
+groupadd accounts
+```
+
+##### Step 3 (Directories) - Under root user - Its shows on root directory
+```bash
+mkdir -p /dept/marketing # p for parent directory
+mkdir -p /dept/sales
+mkdir -p /dept/accounts
+```
+
+##### Step 4 (Assign Users to Their Primary Groups) - Under root user
+```bash
+usermod -aG marketing jakir
+usermod -aG sales jahid
+usermod -aG accounts sadek
+usermod -aG sales sadek
+```
+
+##### Step 5 (Set Group Ownership of Directories) - Under root user
+```bash
+chown :marketing /dept/marketing
+chown :sales /dept/sales
+chown :accounts /dept/accounts
+```
+
+##### Step 6 (Set Directory Permissions) - Under root user
+```bash
+chmod 770 /dept/marketing
+chmod 770 /dept/sales
+chmod 770 /dept/accounts
+```
+
+##### Step 7 (Access Summary)
+
+| User  | Group(s)         | Accessible Directories           |
+|-------|------------------|----------------------------------|
+| Jakir | marketing        | `/dept/marketing`               |
+| Jahid | sales            | `/dept/sales`                   |
+| Sadek | accounts, sales  | `/dept/accounts`, `/dept/sales` |
+
+
+##### Step 8 (Testing) - Under must not root user
+```bash
+su - jakir
+cd /dept/sales      # Should fail
+cd /dept/marketing  # Should succeed
+```
