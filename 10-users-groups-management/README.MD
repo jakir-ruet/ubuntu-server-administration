@@ -183,7 +183,7 @@ cat /etc/login.defs
 
 ### Let's Handson
 #### Real Life Scenario
- I have three departments — `Marketing`, `Sales`, and `Accounts` — and four users: `Jakir (Marketing)`, `Jahid (Sales)`, and `Sadek (Accounts)`. I want to create departmental directories and restrict access such that each user can access only their respective department’s directory. However, Sadek should also have read and write access to the Sales directory in addition to Accounts. How can I implement this setup on a Red Hat system?
+ I have three departments — `Marketing`, `Sales`, and `Accounts` — and four users: `Jakir (Marketing)`, `Jahid (Sales)`, and `Sadek (Accounts)`. I want to create departmental directories and restrict access such that each user can access only their respective department’s directory. However, Sadek should also have `read` and `write` access to the Sales directory in addition to Accounts. How can I implement this setup on a Red Hat system?
 ##### Step 1 (User Add) - Under root user
 ```bash
 adduser jakir
