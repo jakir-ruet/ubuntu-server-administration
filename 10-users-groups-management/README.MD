@@ -247,7 +247,7 @@ cd /dept/marketing  # Should succeed
 ```
 
 #### Real Life Scenario #2
-Suppose you have three departments — finance, entertain, and fashion — and four users: Kabir (finance), Jasim (entertain), and Sadir (fashion). You want to create departmental directories and restrict access such that each user can access only their respective department’s directory. However, Sadir should also have only read and write access to the fashion directory in addition to finance. By using ACL, How can you design this setup on a Red Hat system?
+Suppose you have three departments — `finance`, `entertain`, and `fashion` — and three users: `Kabir (finance)`, `Jasim (entertain)`, and `Sadir (fashion)`. You want to create departmental directories and restrict access such that each user can access only their respective department’s directory. However, `Sadir` should also have only `read` and `write` access to the `fashion` directory in addition to `finance`. By using ACL, How can you design this setup on a Red Hat system?
 
 **Solution**
 To achieve this setup using Access Control Lists (ACLs) on a Red Hat Linux system, we will follow these steps. We will set up the directories for each department, create the necessary groups for each user, and then assign appropriate ACLs to control access.
