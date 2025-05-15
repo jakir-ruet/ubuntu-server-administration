@@ -246,7 +246,7 @@ cd /dept/sales      # Should fail
 cd /dept/marketing  # Should succeed
 ```
 
-#### Real Life Scenario #1
+#### Real Life Scenario #2
 Suppose you have three departments — finance, entertain, and fashion — and four users: Kabir (finance), Jasim (entertain), and Sadir (fashion). You want to create departmental directories and restrict access such that each user can access only their respective department’s directory. However, Sadir should also have only read and write access to the fashion directory in addition to finance. By using ACL, How can you design this setup on a Red Hat system?
 
 **Solution**
