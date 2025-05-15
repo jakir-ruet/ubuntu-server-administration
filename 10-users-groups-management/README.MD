@@ -182,8 +182,8 @@ cat /etc/login.defs
 ```
 
 ### Let's Handson
-#### Real Life Scenario
- I have three departments — `Marketing`, `Sales`, and `Accounts` — and four users: `Jakir (Marketing)`, `Jahid (Sales)`, and `Sadek (Accounts)`. I want to create departmental directories and restrict access such that each user can access only their respective department’s directory. However, Sadek should also have `read` and `write` access to the Sales directory in addition to Accounts. How can I implement this setup on a Red Hat system?
+#### Real Life Scenario #1
+I have three departments — `Marketing`, `Sales`, and `Accounts` — and four users: `Jakir (Marketing)`, `Jahid (Sales)`, and `Sadek (Accounts)`. I want to create departmental directories and restrict access such that each user can access only their respective department’s directory. However, Sadek should also have `read` and `write` access to the Sales directory in addition to Accounts. How can I implement this setup on a Red Hat system?
 ##### Step 1 (User Add) - Under root user
 ```bash
 adduser jakir
@@ -246,64 +246,67 @@ cd /dept/sales      # Should fail
 cd /dept/marketing  # Should succeed
 ```
 
-### Access Control Lists - Handson
+#### Real Life Scenario #1
+Suppose you have three departments — finance, entertain, and fashion — and four users: Kabir (finance), Jasim (entertain), and Sadir (fashion). You want to create departmental directories and restrict access such that each user can access only their respective department’s directory. However, Sadir should also have only read and write access to the fashion directory in addition to finance. By using ACL, How can you design this setup on a Red Hat system?
+
+**Solution**
 To achieve this setup using Access Control Lists (ACLs) on a Red Hat Linux system, we will follow these steps. We will set up the directories for each department, create the necessary groups for each user, and then assign appropriate ACLs to control access.
 
-#### Steps: 1 Create Users
+##### Steps: 1 Create Users
 Ensure that the users (`Kabir`, `Jasim`, `Sadir`) are already created in the system. If not, you can create them using useradd.
 ```bash
 sudo useradd kabir
 sudo useradd jasim
 sudo useradd sadir
 ```
-#### Steps: 2 Create Groups: 
+##### Steps: 2 Create Groups: 
 Create `three groups`, each corresponding to a department.
 ```bash
 sudo groupadd finance
 sudo groupadd entertain
 sudo groupadd fashion
 ```
-#### Steps: 3 Assign Users to Their Groups: 
+##### Steps: 3 Assign Users to Their Groups: 
 Add each user to the appropriate group.
 ```bash
 sudo usermod -aG finance kabir
 sudo usermod -aG entertain jasim
 sudo usermod -aG fashion sadir
 ```
-#### Steps: 4 Create Departmental Directories: 
+##### Steps: 4 Create Departmental Directories: 
 Create directories for each department.
 ```bash
 sudo mkdir /departments/finance
 sudo mkdir /departments/entertain
 sudo mkdir /departments/fashion
 ```
-#### Steps: 5 Set Group Ownership of Directories: 
+##### Steps: 5 Set Group Ownership of Directories: 
 Set the group ownership of each directory to the appropriate department group.
 ```bash
 sudo chown :finance /departments/finance
 sudo chown :entertain /departments/entertain
 sudo chown :fashion /departments/fashion
 ```
-#### Steps: 6 Set Directory Permissions: 
+##### Steps: 6 Set Directory Permissions: 
 Assign the default permissions for each directory so that only members of the respective group can access them. We will use `770 permissions` (`read`, `write`, and execute for the `owner` and `group`, `no permissions` for others).
 ```bash
 sudo chmod 770 /departments/finance
 sudo chmod 770 /departments/entertain
 sudo chmod 770 /departments/fashion
 ```
-#### Steps: 7 Set ACL for Sadir: 
+##### Steps: 7 Set ACL for Sadir: 
 Sadir needs access to both the `finance` and `fashion` directories, but `only` with `read` and `write` access for the `fashion` directory, and only read and execute access for the `finance` directory.
 
-#### Steps: 8 Give Sadir `read` and `write` access to the `fashion` directory:
+##### Steps: 8 Give Sadir `read` and `write` access to the `fashion` directory:
 ```bash
 sudo setfacl -m u:sadir:rw /departments/fashion
 ```
-#### Steps: 9 Give Sadir `read` and `execute` access to the `finance` directory:
+##### Steps: 9 Give Sadir `read` and `execute` access to the `finance` directory:
 
 ```bash
 sudo setfacl -m u:sadir:rx /departments/finance
 ```
-#### Steps: 9 Verify ACL Configuration: 
+##### Steps: 9 Verify ACL Configuration: 
 You can check the ACLs for the directories to ensure everything is set correctly:
 ```bash
 getfacl /departments/finance
