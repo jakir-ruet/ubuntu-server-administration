@@ -245,3 +245,113 @@ su - jakir
 cd /dept/sales      # Should fail
 cd /dept/marketing  # Should succeed
 ```
+
+### Access Control Lists - Handson
+To achieve this setup using Access Control Lists (ACLs) on a Red Hat Linux system, we will follow these steps. We will set up the directories for each department, create the necessary groups for each user, and then assign appropriate ACLs to control access.
+
+#### Steps: 1 Create Users
+Ensure that the users (`Kabir`, `Jasim`, `Sadir`) are already created in the system. If not, you can create them using useradd.
+```bash
+sudo useradd kabir
+sudo useradd jasim
+sudo useradd sadir
+```
+#### Steps: 2 Create Groups: 
+Create `three groups`, each corresponding to a department.
+```bash
+sudo groupadd finance
+sudo groupadd entertain
+sudo groupadd fashion
+```
+#### Steps: 3 Assign Users to Their Groups: 
+Add each user to the appropriate group.
+```bash
+sudo usermod -aG finance kabir
+sudo usermod -aG entertain jasim
+sudo usermod -aG fashion sadir
+```
+#### Steps: 4 Create Departmental Directories: 
+Create directories for each department.
+```bash
+sudo mkdir /departments/finance
+sudo mkdir /departments/entertain
+sudo mkdir /departments/fashion
+```
+#### Steps: 5 Set Group Ownership of Directories: 
+Set the group ownership of each directory to the appropriate department group.
+```bash
+sudo chown :finance /departments/finance
+sudo chown :entertain /departments/entertain
+sudo chown :fashion /departments/fashion
+```
+#### Steps: 6 Set Directory Permissions: 
+Assign the default permissions for each directory so that only members of the respective group can access them. We will use `770 permissions` (`read`, `write`, and execute for the `owner` and `group`, `no permissions` for others).
+```bash
+sudo chmod 770 /departments/finance
+sudo chmod 770 /departments/entertain
+sudo chmod 770 /departments/fashion
+```
+#### Steps: 7 Set ACL for Sadir: 
+Sadir needs access to both the `finance` and `fashion` directories, but `only` with `read` and `write` access for the `fashion` directory, and only read and execute access for the `finance` directory.
+
+#### Steps: 8 Give Sadir `read` and `write` access to the `fashion` directory:
+```bash
+sudo setfacl -m u:sadir:rw /departments/fashion
+```
+#### Steps: 9 Give Sadir `read` and `execute` access to the `finance` directory:
+
+```bash
+sudo setfacl -m u:sadir:rx /departments/finance
+```
+#### Steps: 9 Verify ACL Configuration: 
+You can check the ACLs for the directories to ensure everything is set correctly:
+```bash
+getfacl /departments/finance
+getfacl /departments/entertain
+getfacl /departments/fashion
+```
+**Explanation:**
+- **Finance Directory:**
+   - Only Kabir (owner) and members of the finance group have full access (read, write, and execute).
+   - Sadir will have read and execute access to the finance directory because of the ACL applied.
+
+- **Entertain Directory:**
+   - Only Jasim (owner) and members of the entertain group have full access.
+
+- **Fashion Directory:**
+   - Sadir has read and write access to the fashion directory because of the ACL.
+
+- Kabir and Jasim have no access to the fashion directory since they are not part of the fashion group.
+
+- **Default ACLs:**
+   - Default ACLs are set up for the directories so that when new files or directories are created inside the departmental directories, they inherit the correct permissions.
+
+**Check ACLs Output:** Finance Directory (/departments/finance):
+```bash
+getfacl /departments/finance
+# file: /departments/finance
+# owner: root
+# group: finance
+user::rwx
+group::rwx
+other::---
+user:sadir:rx
+```
+**Fashion Directory **(/departments/fashion):
+```bash
+getfacl /departments/fashion
+# file: /departments/fashion
+# owner: root
+# group: fashion
+user::rwx
+group::rwx
+other::---
+user:sadir:rw
+```
+**Recap of Permissions:**
+- Kabir can access only the finance directory.
+- Jasim can access only the entertain directory.
+- Sadir has:
+   - Read and execute access to the finance directory.
+   - Read and write access to the fashion directory.
+By using ACLs in this manner, you can enforce fine-grained access control on a per-user and per-directory basis.
