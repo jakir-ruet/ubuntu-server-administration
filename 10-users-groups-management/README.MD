@@ -329,7 +329,9 @@ getfacl /departments/fashion
 - **Default ACLs:**
    - Default ACLs are set up for the directories so that when new files or directories are created inside the departmental directories, they inherit the correct permissions.
 
-**Check ACLs Output:** Finance Directory (/departments/finance):
+**Check ACLs Output:** 
+
+**Finance Directory** (/departments/finance):
 ```bash
 getfacl /departments/finance
 # file: /departments/finance
@@ -340,7 +342,7 @@ group::rwx
 other::---
 user:sadir:rx
 ```
-**Fashion Directory **(/departments/fashion):
+**Fashion Directory**(/departments/fashion):
 ```bash
 getfacl /departments/fashion
 # file: /departments/fashion
@@ -351,6 +353,7 @@ group::rwx
 other::---
 user:sadir:rw
 ```
+
 **Recap of Permissions:**
 - Kabir can access only the finance directory.
 - Jasim can access only the entertain directory.
