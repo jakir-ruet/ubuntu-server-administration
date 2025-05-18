@@ -361,3 +361,87 @@ user:sadir:rw
    - Read and execute access to the finance directory.
    - Read and write access to the fashion directory.
 By using ACLs in this manner, you can enforce fine-grained access control on a per-user and per-directory basis.
+
+#### Real Life Scenario #3
+Create three users `ahad`, `fahad`, and `samim`. All three users must change their password upon their first login. in Readhat.
+
+**Solution**
+
+1. Create Users
+```bash
+sudo useradd ahad
+sudo useradd fahad
+sudo useradd samim
+```
+2. Set Temporary Passwords
+```bash
+echo "TempPass123" | sudo passwd --stdin ahad
+echo "TempPass123" | sudo passwd --stdin fahad
+echo "TempPass123" | sudo passwd --stdin samim
+```
+3. Force Password Change on First Login
+```bash
+sudo chage -d 0 ahad
+sudo chage -d 0 fahad
+sudo chage -d 0 samim
+```
+4. Verify (Optional) - You can check that the password change is required:
+```bash
+chage -l ahad
+```
+5. Login & set new password
+```bash
+su - ahad
+```
+#### Real Life Scenario #4
+Create a group named mango and add the users ahad, fahad, and samim to it. Grant all members of the mango group permission to install packages on the system in Redhat.
+
+**Solution**
+
+1. Create the group
+```bash
+sudo groupadd mango
+```
+2. Add users to the group
+```bash
+sudo usermod -aG mango ahad
+sudo usermod -aG mango fahad
+sudo usermod -aG mango samim
+```
+3. You can verify group membership using:
+```bash
+groups ahad
+groups fahad
+groups samim
+```
+4. Allow the mango group to install packages using sudo. - Edit the sudoers file safely using visudo:
+```bash
+sudo visudo
+%mango ALL=(ALL) NOPASSWD: /usr/bin/yum, /usr/bin/dnf # Add this line to the end of the file:
+```
+This allows members of the mango group to run `yum` or `dnf` (depending on what Red Hat uses) to install packages without needing a password.
+5. Limit to installing only (no remove/update) - Optional
+```bash
+%mango ALL=(ALL) NOPASSWD: /usr/bin/yum install *, /usr/bin/dnf install *
+```
+5. Test sudo access to install packages (as one of the users)
+```bash
+su - ahad
+sudo dnf install nano
+```
+
+#### Real Life Scenario #5.
+Create a directory named `/staples` and make `samim` the owner of this directory. All the three members of the `mango` group should full permissions to the `/staples` directory.
+
+**Solution**
+
+To fulfill your request on a Linux system, here’s how you can:
+- Create the `/staples` directory
+- Change ownership to user `samim`
+- `Grant full permissions` to all three members of the `mango` group
+```bash
+sudo mkdir /staples # Create the directory
+sudo chown samim /staples # Change the owner of the directory to user 'samim'
+sudo chgrp mango /staples # Change the group of the directory to 'mango'
+sudo chmod 770 /staples # Give full permissions to the group (read, write, execute)
+```
