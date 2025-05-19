@@ -28,6 +28,7 @@ sudo systemctl start named
 sudo systemctl enable named
 cat /etc/named.conf
 sudo systemctl restart named
+netstat -antp # Shows all active connections and listening ports
 ```
 ### Primary DNS Server 
 The Primary DNS Server (also known as the Master DNS Server) holds the main records for a domain. It is where DNS zone files are stored and maintained. Key functions:
