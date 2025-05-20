@@ -28,7 +28,6 @@ sudo systemctl start named
 sudo systemctl enable named
 cat /etc/named.conf
 sudo systemctl restart named
-netstat -antp # Shows all active connections and listening ports
 ```
 ### Primary DNS Server 
 The Primary DNS Server (also known as the Master DNS Server) holds the main records for a domain. It is where DNS zone files are stored and maintained. Key functions:
@@ -83,11 +82,11 @@ DNS servers store results of DNS queries for a period of time (called the Time t
         86400 )    ; TTL
 ```
 ### Zone: Forward & Reverse
-- **Forward Zone:** This is the most common zone where a domain name is mapped to an IP address (A or AAAA records). Example for `forward zone` (`example.com.zone`):
+- **Forward Zone:** This is the most common zone where a domain name is mapped to an IP address [`www.example.com to IP addresses`] (A or AAAA records). Example for `forward zone` (`example.com.zone`):
 ```bash
 @ IN A 192.168.1.1
 ```
-- **Reverse Zone:** Used to resolve an IP address back to a domain name (PTR records). It's the reverse of the forward zone. Example for `reverse zone` (`1.168.192.in-addr.arpa.zone`):
+- **Reverse Zone:** Used to resolve an IP address back to a domain name [`IP addresses to www.example.com`] (PTR records). It's the reverse of the forward zone. Example for `reverse zone` (`1.168.192.in-addr.arpa.zone`):
 ```bash
 @ IN PTR example.com.
 ```
@@ -160,4 +159,191 @@ key "rndc-key" {
 controls {
     inet 127.0.0.1 port 953 allow { 127.0.0.1; } keys { rndc-key; };
 };
+```
+### Realtime Scenario 
+#### Problem #1
+How would you configure a DNS server to allow queries only from the local network, and what configuration changes are necessary on a Windows 10 client to test name resolution?
+
+**Solution**
+By implementing below steps, I can do it.
+- DNS Server Installation
+```bash
+sudo dnf install bind bind-utils
+```
+- Edit `/etc/named.conf`
+```bash
+vi /etc/named.conf
+systemctl restart named
+netstat -antp # check running services
+192.168.68.0# master machine `192.168.68.151` IP
+systemctl restart named
+netstat -antp # master machine `192.168.68.151` IP enable.
+```
+- DNS Port Settings
+```bash
+ipconfig # in windows machine.
+ipconfig /all
+```
+- Allow query from local network
+```bash
+ping 8.8.8.8
+ping google.com # It doest not work
+# put `192.168.68.0` in after localhost`allow-query` { localhost; 192.168.68.0;};
+ping 192.168.68.151 # master machine `192.168.68.151` IP
+```
+- Configure Windows 11 Client & Test Name Resolution
+```bash
+ping 8.8.8.8
+ping google.com # It doest not work
+ping 192.168.68.151 # master machine `192.168.68.151` IP
+```
+
+#### Problem #2
+I have three domains: mangobd.com (IP: 192.168.68.151), bananabd.com (IP: 192.168.68.152), and berrybd.com (IP: 192.168.68.153). I would like to configure a DNS server to manage these domains on a Red Hat-based Linux system. Could you guide me on how to implement this setup in a production environment?
+
+**Solution**
+To configure a production-level DNS server for multiple domains on a Red Hat-based system (RHEL/CentOS), we'll set up BIND (Berkeley Internet Name Domain) as the DNS server software. You'll configure it to manage the DNS records for the three domains you mentioned: `mangobd.com`, `bananabd.com,` and `berrybd.com.` Steps Overview:
+- Install BIND (DNS server software)
+- Configure BIND to handle multiple domains
+- Set up zone files for each domain
+- Set up name servers (NS records) for each domain
+- Configure security and permissions
+- Test DNS resolution
+
+##### Install BIND (DNS server software)
+```bash
+sudo dnf update -y
+sudo dnf install -y bind bind-utils
+```
+##### Configure BIND to handle multiple domains.  Open `/etc/named.conf`
+```json
+options {
+    listen-on port 53 { 127.0.0.1; 192.168.68.151; 192.168.68.152; 192.168.68.153; };   # Add your DNS server IPs
+    listen-on-v6 { none; };
+    directory "/var/named";
+    dump-file "/var/named/data/cache_dump.db";
+    statistics-file "/var/named/data/named_stats.txt";
+    memstatistics-file "/var/named/data/named_mem_stats.txt";
+    allow-query { any; };
+    allow-query-cache { none; };    # Disable recursion if it is a public DNS server
+    recursion no;                   # Disable recursion for external queries
+    forwarders {                    # Optional: Add external DNS servers if necessary
+        8.8.8.8;                    # Google DNS
+        8.8.4.4;
+    };
+};
+
+zone "mangobd.com" IN {
+    type master;
+    file "/var/named/mangobd.com.zone";
+};
+
+zone "bananabd.com" IN {
+    type master;
+    file "/var/named/bananabd.com.zone";
+};
+
+zone "berrybd.com" IN {
+    type master;
+    file "/var/named/berrybd.com.zone";
+};
+```
+##### Logging setup
+```bash
+logging {
+    channel default_file {
+        file "/var/log/named.log" versions 3 size 5m;
+        severity info;
+        print-time yes;
+        print-severity yes;
+        print-category yes;
+    };
+
+    category default { default_file; };
+};
+```
+##### Set up zone files for each domain
+- Create the zone file `/var/named/mangobd.com.zone`
+```bash
+$TTL 86400
+@    IN    SOA   ns1.mangobd.com. admin.mangobd.com. (
+              2023052001 ; Serial
+              3600       ; Refresh
+              1800       ; Retry
+              1209600    ; Expire
+              86400 )    ; Minimum TTL
+
+     IN    NS    ns1.mangobd.com.
+     IN    NS    ns2.mangobd.com.
+
+ns1  IN    A     192.168.68.151
+ns2  IN    A     192.168.68.152  ; Secondary DNS server
+
+@    IN    A     192.168.68.151  ; IP for mangobd.com
+www  IN    A     192.168.68.151  ; IP for www.mangobd.com
+```
+- Create the zone file `/var/named/bananabd.com.zone`
+```bash
+$TTL 86400
+@    IN    SOA   ns1.bananabd.com. admin.bananabd.com. (
+              2023052001 ; Serial
+              3600       ; Refresh
+              1800       ; Retry
+              1209600    ; Expire
+              86400 )    ; Minimum TTL
+
+     IN    NS    ns1.bananabd.com.
+     IN    NS    ns2.bananabd.com.
+
+ns1  IN    A     192.168.68.152
+ns2  IN    A     192.168.68.153  ; Secondary DNS server
+
+@    IN    A     192.168.68.152  ; IP for bananabd.com
+www  IN    A     192.168.68.152  ; IP for www.bananabd.com
+```
+- Create the zone file `/var/named/berrybd.com.zone`
+```bash
+$TTL 86400
+@    IN    SOA   ns1.berrybd.com. admin.berrybd.com. (
+              2023052001 ; Serial
+              3600       ; Refresh
+              1800       ; Retry
+              1209600    ; Expire
+              86400 )    ; Minimum TTL
+
+     IN    NS    ns1.berrybd.com.
+     IN    NS    ns2.berrybd.com.
+
+ns1  IN    A     192.168.68.153
+ns2  IN    A     192.168.68.151  ; Secondary DNS server
+
+@    IN    A     192.168.68.153  ; IP for berrybd.com
+www  IN    A     192.168.68.153  ; IP for www.berrybd.com
+```
+##### Set File Permissions
+```bash
+sudo chown root:named /var/named/*.zone
+sudo chmod 644 /var/named/*.zone
+```
+##### Start and Enable BIND
+```bash
+sudo systemctl start named
+sudo systemctl enable named
+```
+##### Configure Firewall
+```bash
+sudo firewall-cmd --add-service=dns --permanent
+sudo firewall-cmd --reload
+```
+Or
+```bash
+sudo firewall-cmd --zone=public --add-port=53/tcp --permanent
+sudo firewall-cmd --zone=public --add-port=53/udp --permanent
+sudo firewall-cmd --reload
+```
+##### Test Your DNS Server
+```bash
+dig @localhost mangobd.com
+dig @localhost bananabd.com
+dig @localhost berrybd.com
 ```
