@@ -227,3 +227,4 @@ Here are some examples of common types of encryption used today.
 
 **Message Digest Algorithm 5 (MD5)**
 It's stands for `Message Digest Algorithm 5`. It's a widely used cryptographic hash function that produces a `128`-bit (16-byte) hash value, typically rendered as a `32`-digit hexadecimal number.
+It's stands for `Message Digest Algorithm 5`. It's a widely used cryptographic hash function that produces a `128`-bit (16-byte) hash value, typically rendered as a `32`-digit hexadecimal number.
