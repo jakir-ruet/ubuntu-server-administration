@@ -1,6 +1,12 @@
 ## Welcome to Domain Name System (DNS)
 DNS servers are responsible for resolving domain names into IP addresses. When setting up a DNS server, you typically use software like BIND (Berkeley Internet Name Domain), Unbound, or others. On Red Hat-based systems (like RHEL or CentOS), BIND is commonly used for installation and configuration. 
 
+**Types of DNS server**
+- DNS Resolver (Provided by ISP DNS Server, Use Local DNS Server or Google DNS Server like 8.8.8.8 )
+- [Root Name Server](https://root-servers.org/)
+- Top Level Domain Name Server
+- Authoritive Name Server
+
 ![DNS Architecture](/img/dns-architecture.png)
 
 We will discuss 
