@@ -173,3 +173,57 @@ This example allows a maximum of 3 new SSH connections per minute.
 sudo iptables-save > /etc/iptables/rules.v4
 ```
 - Restore rules on reboot: Use a service like `iptables-persistent` (Debian/Ubuntu) or configure them in the appropriate system file (`/etc/sysconfig/iptables` on CentOS/RedHat).
+
+### Encryption
+It's a fundamental technique in computer security used to protect data confidentiality by transforming `plaintext` into unreadable `ciphertext` using algorithms and cryptographic keys. It ensures that only authorized parties can read the original data, even if intercepted.
+
+#### Basic Concepts of Encryption
+| **Type**                 | **Description**                                                                             |
+| ------------------------ | ------------------------------------------------------------------------------------------- |
+| **PlainTex**             | The original readable data that needs to be encrypted, like "Hello, world!"                 |
+| **Ciphertext**           | The encrypted, unreadable data after applying encryption, line "7d0a2b1e6a1c"               |
+| **Key**                  | A secret string of data used by encryption algorithms to perform the encryption/decryption. |
+| **Encryption Algorithm** | The original readable data that needs to be encrypted.                                      |
+| **Decryption**           | The reverse process of encryption to convert ciphertext back into plaintext.                |
+
+#### Types of Encryption
+There are `two` types of encryption algorithms: `symmetric` (also called shared key algorithm) and `asymmetric` (also known as public key algorithm). **Hash functions** are not technically encryption, but they are often used alongside encryption for integrity checks, digital signatures, and password hashing.
+
+1. **Symmetric Key Encryption (Private Key Encryption)**
+   It's uses the same key for `encryption` and `decryption`. Because it uses the `same key`, symmetric encryption can be more cost effective for the security it provides. That said, it is important to invest more in securely storing data when using symmetric encryption.
+
+![Symmetric Key Encryption (Private Key Encryption)](/img/symmetric-key-encryption.png)
+
+2. **Asymmetric Key Encryption (Public Key Encryption)**
+   It's uses `two` separate keys: a `public key` and a `private key`. Often a public key is used to encrypt the data while a private key is required to decrypt the data. The private key is only given to users with authorized access. As a result, asymmetric encryption can be more effective, but it is also more costly.
+
+![Asymmetric Key Encryption (Public Key Encryption)](/img/asymmetric-encryption.png)
+
+#### Types of data encryption
+Here are some examples of common types of encryption used today.
+1. **AES - Advanced Encryption Standard**
+   It's is a **symmetric encryption** algorithm standardized by NIST. It uses the same key for both encryption and decryption, operating on `128`-bit data blocks with key sizes of `128`, `192`, or `256` bits. Known for its speed and strong security, AES is widely used in government, finance, and technology to protect sensitive data across software and hardware systems.
+2. **Triple DES (3DES) - Triple Data Encryption Standard**
+   It's, often written `3DES`, is a version of the original DES encryption algorithm that encrypts data `three` times. The Triple DES uses three `64`-bit keys, so the key length is `192` bits. Triple DES is a **symmetric encryption**, and the key is private. Because it encrypts data in `64`-bit segments, Triple DES is considered a block cipher. Cipher Block Chaining (CBC), however, is an encryption mode that struggles at high data rates.
+3. **Blowfish**
+   It's Similar to Triple DES, Blowfish is a **symmetric block cipher**. Unlike Triple DES, Blowfish does variable-length key encryption. Rather than set `64`-bit segments, Blowfish encrypts segments ranging from `32 to 448` bits. Blowfish is an unpatented and unlicensed encryption technique. For this reason, it is free and available for public use.
+4. **RSA - Ron `R`ivest, Adi `S`hamir, and Leonard `A`delman**
+   It's the standard encryption technique for important data security. RSA is asymmetric cryptography, so there is one public key and one private key. The RSA algorithm uses prime factorization. Simply put, this key requires the factorization of a product involving two large prime numbers. While it seems easy, figuring out these two numbers can be difficult. Even for large computers, it can be expensive and exhaustive to decrypt. While RSA can be very useful, it becomes increasingly inefficient at higher security levels.
+5. **AES - Advanced Encryption Standard**
+   Because of an increase in brute-force attacks on the original DES, It was put into place in 2002. AES is a symmetric block cipher that was originally named Rijndael. This block cipher uses three separate keys: `AES-128`, `AES-192`, and `AES-256`. These three keys are used to encrypt and decrypt information of 128 bits. Since its adoption, AES has been used to protect classified government information and sensitive data.
+6. **ECC - Elliptic Curve Cryptography**
+   It's a very advanced approach. Often based on a common public key algorithm, ECC combines elliptic curves and number theory to encrypt data. These elliptic curves are within finite fields and are symmetrical over the x-axis of a graph. Given these properties, cryptographers can provide robust security with much smaller and efficient keys. For example, an RSA key of 15,360 bits would be equivalent to an ECC key of just 512 bits.
+
+  #### Hash functions
+  A hash function is a mathematical algorithm that transforms input data of any size into a fixed-size output, known as a hash, digest, or checksum. Types of hash functions
+  - Secure Hash Algorithm (SHA)
+  - Message Digest Algorithm 5 (MD5)
+
+**Secure Hash Algorithm (SHA)**
+  The Secure Hash Algorithm (SHA) is a family of cryptographic hash functions developed by the National Security Agency (NSA) and published by NIST. SHA functions are widely used to ensure `data integrity`, `authenticate messages`, and `secure digital signatures`, and `password hashing`. Common Variants:
+- `SHA-1:` Produces a `160`-bit hash (now considered insecure).
+- `SHA-2:` Includes `SHA-224`, `SHA-256`, `SHA-384`, and `SHA-512` (stronger and widely used).
+- `SHA-3:` A newer standard with a different internal design (based on the Keccak algorithm).
+
+**Message Digest Algorithm 5 (MD5)**
+It's stands for `Message Digest Algorithm 5`. It's a widely used cryptographic hash function that produces a `128`-bit (16-byte) hash value, typically rendered as a `32`-digit hexadecimal number.
