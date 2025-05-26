@@ -17,9 +17,9 @@ System tuning refers to optimizing the performance of a computer system by adjus
 
 #### Process Management
 Running an instance of a program is called a process. In Linux Process ID (PID) is used to represent the process details. The process will be implemented in Linux in two ways;
-1. Background Process
+1. **Background Process**
    Depends on the user for input also referred to as interactive processes. For example Office programs.
-2. ForegroundProcess
+2. **Foreground Process**
    Runs independently of the user referred to as a non-interactive or automatic process. For example Antivirus programs
 
 **State:**
