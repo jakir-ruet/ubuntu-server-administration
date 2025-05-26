@@ -32,6 +32,7 @@ A process in Linux can go through different states after it’s created and befo
 - Zombie (Partly Alive)
 
 - State with description
+
 | **State**               | **Description** |
 |-------------------------|-----------------|
 | **Running**             | The process is currently executing on the CPU or is ready to run (in the run queue). |
