@@ -19,7 +19,8 @@ Running an instance of a program is called a process. In Linux Process ID (PID) 
    Depends on the user for input also referred to as interactive processes. For example Office programs.
 2. ForegroundProcess
    Runs independently of the user referred to as a non-interactive or automatic process. For example Antivirus programs
-***State: ***
+
+**State:**
 A process in Linux can go through different states after it’s created and before it’s terminated. These states are:
 - Running
 - Sleeping
