@@ -1,13 +1,15 @@
 ### System Tuning?
 System tuning refers to optimizing the performance of a computer system by adjusting certain parameters, configurations, and settings. In the context of **Red Hat Enterprise Linux (RHEL)**, system tuning aims to improve the efficiency, speed, and resource management of your server or workstation. This can involve fine-tuning several components, including:
 
-- **CPU:** Adjusting how the CPU performs tasks or manages multiple processes (like setting CPU governor for performance or power savings).
-- **Memory (RAM):** Configuring how the system uses memory, including optimizing cache usage, limiting swap usage, or enabling huge pages for large-memory applications.
-- **Disk I/O:** Modifying disk scheduling algorithms or file system parameters to improve read/write operations.
-- **Network:** Tuning TCP/IP settings for faster data transfer and reducing network latency.
-- **Kernel Parameters:** Fine-tuning the Linux kernel parameters (via sysctl) for better system performance under load.
+| **Component**     | **Description** |
+|-------------------|-----------------|
+| **CPU**           | Adjusting how the CPU performs tasks or manages multiple processes (like setting CPU governor for performance or power savings). |
+| **Memory (RAM)**  | Configuring how the system uses memory, including optimizing cache usage, limiting swap usage, or enabling huge pages for large-memory applications. |
+| **Disk I/O**      | Modifying disk scheduling algorithms or file system parameters to improve read/write operations. |
+| **Network**       | Tuning TCP/IP settings for faster data transfer and reducing network latency. |
+| **Kernel Parameters** | Fine-tuning the Linux kernel parameters (via `sysctl`) for better system performance under load. |
 
-**Tuning Important?**
+#### Tuning Important?
 - **Performance Optimization:** Tuning ensures that your system runs as efficiently as possible, making sure resources (CPU, memory, disk, network) are used optimally.
 - **Stability:** Proper tuning can help avoid system crashes or slowdowns by preventing resource exhaustion.
 - **Scalability:** Tuning helps systems scale to meet the needs of high-load applications, such as web servers, databases, and enterprise applications.
@@ -27,7 +29,7 @@ A process in Linux can go through different states after it’s created and befo
   - Interruptible sleep
   - Uninterruptible sleep
 - Stopped
-- Zombie
+- Zombie (Partly Alive)
 - A process in a running state means that it is running or it’s ready to run.
 - The process is in a sleeping state when it is waiting for a resource to be available.
 - A process in Interruptible sleep will wake up to handle signals, whereas a process in Uninterruptible sleep will not.
@@ -52,23 +54,24 @@ The important terminology follows:
 
 - Status:
   There are five types:
-  - ‘D’ = uninterruptible sleep ‘R’ = running
-  - ‘S’ = sleeping
-  - ‘T’ = traced or stopped
-  - ‘Z’ = zombie
+  - ‘D’ = Uninterruptible Sleep 
+  - ‘R’ = Running
+  - ‘S’ = Sleeping
+  - ‘T’ = Traced/Topped
+  - ‘Z’ = Zombie
 
-Different Commands for Process Management
+**Different Commands for Process Management**
 There are two commands available in Linux to track running processes. These two commands are ‘top’ and ‘ps’.
 |  SL   |        Command        | Explanation                                                                                                                               |
 | :---: | :-------------------: | :---------------------------------------------------------------------------------------------------------------------------------------- |
 |   1   |         `top`         | To track the running processes on your machine you can use the top command. Press q for quit.                                             |
 |   2   | `ps (Process Status)` | It displays the currently running processes. However, unlike the top command, the output generated is not in real-time. Press q for quit. |
 
-To get more information using the ps command use:
+- To get more information using the ps command use:
 ```bash
 ps -u
 ```
-The terminology is as follows:
+- The terminology is as follows:
 |  SL   | Command | Explanation                                   |
 | :---: | :-----: | :-------------------------------------------- |
 |   1   |  `PID`  | Process ID                                    |
@@ -76,7 +79,7 @@ The terminology is as follows:
 |   3   | `TIME`  | Total time the process has been running       |
 |   4   |  `CMD`  | Name of the command that launches the process |
 
-While the ps command only displays the processes that are currently running, you can also use it to list all the processes.
+- While the ps command only displays the processes that are currently running, you can also use it to list all the processes.
 ```bash
 ps      # running process
 ps -A   # running process in details
@@ -93,12 +96,12 @@ ps -C su # see the ps by category
 pgrep bash # Find the PID
 ```
 
-Checking the kill service name and its ID.
+- Checking the kill service name and its ID.
 ```bash
 kill -l # kill list
 kill -L # kill list
 ```
-Kill the process
+- Kill the process
 ```bash
 kill -9 PID
 ```
