@@ -174,6 +174,70 @@ sudo iptables-save > /etc/iptables/rules.v4
 ```
 - Restore rules on reboot: Use a service like `iptables-persistent` (Debian/Ubuntu) or configure them in the appropriate system file (`/etc/sysconfig/iptables` on CentOS/RedHat).
 
+### Security Enhanced Linux (SELinux) Architecture and Packages
+It's security in Red Hat Enterprise Linux (RHEL). This guide covers what SELinux is, how it works, how to configure and troubleshoot it, and best practices for managing security using SELinux on RHEL.
+
+#### What is SELinux?
+SELinux is a `mandatory access control` (MAC) system integrated into the Linux kernel. It adds an additional layer of access control by defining security policies that restrict what processes can do on a system.
+- `Security-Enhanced Linux` (SELinux) is a `Linux Security Module` (LSM) built into the Linux kernel.
+- It is governed by a security policy that is managed by the administrator and loaded during system boot.
+- SELinux intercepts security-sensitive operations and evaluates them based on the loaded policy:
+  - If permitted, the operation proceeds.
+  - If denied, the operation is blocked, and an error is generated.
+
+##### To optimize performance, SELinux decisions
+whether to allow or deny access—are cached in
+- Access Vector Cache (AVC):
+  - SELinux decisions (allow or deny) are cached in the Access Vector Cache (AVC) to improve performance.
+  - AVC reduces the need for repeated checks against the SELinux policy.
+  - SELinux policies are only effective if Discretionary Access Control (DAC) does not deny access first.
+  - DAC-denied actions bypass SELinux policy checks, meaning SELinux won’t block them.
+- Audit Logs:
+  - SELinux audit logs are stored in `/var/log/audit/audit.log`.
+  - These logs start with the string type=AVC and record SELinux decision details.
+- Integration with systemd:
+  - In RHEL 9, system services are managed by the systemd daemon.
+  - systemd starts and stops services using the systemctl utility.
+  - systemd interacts with SELinux:
+    - It checks the security context of both the requesting process and the unit file.
+    - systemd queries SELinux to determine if the action is allowed based on policy.
+- Enhanced Security with systemd:
+  - This integration strengthens the security of critical system services.
+  - SELinux ensures only permitted processes can interact with systemd.
+  - If a compromised application tries to interact with systemd, SELinux can contain the threat by blocking unauthorized access.
+- D-Bus Communication:
+  - If a process sends a D-Bus message to another process, SELinux checks whether the communication is allowed:
+      - If the SELinux policy denies it, a USER_AVC denial is logged, and the message fails.
+  - D-Bus communication is bidirectional, meaning the SELinux policy must allow access in both directions.
+- Important Note:
+  - To avoid issues with incorrect SELinux labeling and access problems, always start services using the systemctl start command.
+
+#### Packages
+##### Policy Packages:.
+- `selinux-policy-targeted `– The standard SELinux policy package.
+- `selinux-policy-mls` – For multi-level security (MLS) configurations.
+```bash
+sudo dnf install policycoreutils
+sudo dnf install policycoreutils-python-utils
+sudo dnf install selinux-policy
+sudo dnf install selinux-policy-targeted
+```
+##### Tools:
+- `policycoreutils` – Core utilities for SELinux policy management.
+- `policycoreutils-gui` – Graphical utilities for managing SELinux.
+- `libselinux-utils` – Utilities for working with SELinux libraries.
+- `policycoreutils-python-utils` – Python utilities for SELinux.
+- `setools-console` – Tools for working with SELinux policy.
+- `checkpolicy` – A tool for compiling SELinux policy modules.
+```bash
+sudo dnf install policycoreutils
+sudo dnf install policycoreutils-gui
+sudo dnf install libselinux-utils
+sudo dnf install policycoreutils-python-utils
+sudo dnf install setools-console
+sudo dnf install checkpolicy
+```
+
 ### Encryption
 It's a fundamental technique in computer security used to protect data confidentiality by transforming `plaintext` into unreadable `ciphertext` using algorithms and cryptographic keys. It ensures that only authorized parties can read the original data, even if intercepted.
 
