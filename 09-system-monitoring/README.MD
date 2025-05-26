@@ -101,3 +101,121 @@ Kill the process
 ```bash
 kill -9 PID
 ```
+
+### Scheduling - Recurring - Repeating Tasks
+Scheduling tasks in Red Hat Linux (any Linux-based system) is commonly done using cron jobs or at jobs for one-time tasks. Here's a complete guideline on how to schedule (`daily`, `hourly`, `weekly`) future tasks in Red Hat Linux using these tools. We can do it by `three` ways
+1. Using `cron` Daemon
+2. Using `at` Daemon
+3. Using `systemd timers` Daemon
+
+1. **Cron Daemon** Ensure the cron daemon (crond) is running. You can check its status or start it if it’s not running:
+```bash
+sudo systemctl status crond     # Check if cron is running
+sudo systemctl start crond      # Start cron if not running
+```
+
+- Cron Syntax
+```bash
+* * * * * /path/to/command
+- - - - -
+| | | | |
+| | | | +---- Day of the week   (0 - 7) (Sunday = 0 or 7)
+| | | +------ Month             (1 - 12)
+| | +-------- Day of the month  (1 - 31)
+| +---------- Hour              (0 - 23)
++------------ Minute            (0 - 59)
+```
+- View & Edit the Cron Table (Crontab)
+```bash
+crontab -l
+crontab -e
+```
+- Add some cron jobs 
+  - To run a backup script every day at `3 AM`
+```bash
+0 3 * * * /path/to/backup_script.sh
+```
+  - To run a command at `5 PM` every Friday
+```bash
+0 17 * * 5 /path/to/weekly_script.sh
+```
+  - To run a backup script at `2:30 AM` on the first day of every month:
+```bash
+30 2 1 * * /path/to/monthly_backup.sh
+```
+
+- View Cron Jobs
+```bash
+crontab -l
+```
+- Remove Cron Jobs
+```bash
+crontab -r
+```
+- Viewing Cron Logs
+```bash
+sudo cat /var/log/cron
+```
+
+2. **At Daemon**
+- Checking if at is Installed
+```bash
+sudo dnf install at        # Install at if necessary
+sudo systemctl start atd   # Start the at daemon
+sudo systemctl enable atd 
+```
+- Using at to Schedule Tasks
+  - To run a script at 10:00 AM tomorrow.
+```bash
+echo "/path/to/script.sh" | at 10:00 AM tomorrow
+```
+  - Alternatively, you can enter the at interactive mode.
+```bash
+at 10:00 AM tomorrow
+at> /path/to/script.sh
+at> <EOT>  # Press Ctrl+D to submit the job
+```
+- View Scheduled at Jobs
+```bash
+atq
+```
+- Remove Scheduled Jobs
+```bash
+atrm <job_id>
+atrm 3  # Removes the job with ID 3
+```
+- Example at Jobs
+```bash
+echo "/path/to/script.sh" | at 2:00 PM # To run a script at 2 PM today.
+echo "/path/to/script.sh" | at 5:30 AM 06/15/2025 # To run a script at 5:30 AM on a specific date.
+```
+
+3. **systemd timers Daemon**
+If you need more flexibility or complex scheduling, you can use `systemd timers`, which are an alternative to cron and at with more features.
+- Create the Service Unit `sudo nano /etc/systemd/system/backup.service`
+```ini
+[Unit]
+Description=Backup Service
+[Service]
+Type=simple
+ExecStart=/path/to/backup_script.sh
+```
+- Create the Timer Unit `sudo nano /etc/systemd/system/backup.timer`
+```ini
+[Unit]
+Description=Runs Backup Service Daily at 2 AM
+[Timer]
+OnCalendar=daily
+Persistent=true
+[Install]
+WantedBy=timers.target
+```
+- Start and Enable the Timer
+```bash
+sudo systemctl start backup.timer
+sudo systemctl enable backup.timer
+```
+- Check Timer Status
+```bash
+sudo systemctl status backup.timer
+```
