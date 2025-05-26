@@ -30,11 +30,16 @@ A process in Linux can go through different states after it’s created and befo
   - Uninterruptible sleep
 - Stopped
 - Zombie (Partly Alive)
-- A process in a running state means that it is running or it’s ready to run.
-- The process is in a sleeping state when it is waiting for a resource to be available.
-- A process in Interruptible sleep will wake up to handle signals, whereas a process in Uninterruptible sleep will not.
-- A process enters a stopped state when it receives a stop signal.
-- Zombie state is when a process is dead but the entry for the process is still present in the table.
+
+- State with description
+| **State**               | **Description** |
+|-------------------------|-----------------|
+| **Running**             | The process is currently executing on the CPU or is ready to run (in the run queue). |
+| **Sleeping**            | The process is waiting for a resource (e.g., I/O operation) to become available. |
+| **Interruptible Sleep** | A type of sleeping state where the process can wake up when it receives a signal. |
+| **Uninterruptible Sleep** | A sleeping state where the process cannot be interrupted by signals (usually waiting on I/O). |
+| **Stopped**             | The process has received a stop signal (e.g., `SIGSTOP`) and is paused. |
+| **Zombie (Partly Alive)** | The process has finished executing but still has an entry in the process table because its parent has not yet read its exit status. |
 
 The important terminology follows:
 |  SL   |   Field   | Description                                 | Example 1 | Example 2 |
